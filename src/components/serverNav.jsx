@@ -1,24 +1,26 @@
-"use client";
-import { signOut, useSession } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { signOut } from "@/lib/auth-client";
+import { headers } from "next/headers";
 import Link from "next/link";
 import React from "react";
 
-const Navbar = () => {
-  const { data, isPending } = useSession();
-  console.log(data);
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-  const user = data?.user;
+const ServerNav = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  const user = session?.user;
+  
+  console.log(session, + "seassion");
 
   return (
     <div className="flex justify-between items-center p-5">
       <h1>logo</h1>
       <ul className="flex justify-center items-center gap-5">
-        {data ? (
+        {session ? (
           <div className="flex gap-6">
           <div> {user?.name} </div>
-          <button onClick={()=> signOut()} className="cursor-pointer">logout</button>
+          
           </div>
         ) : (
           <>
@@ -31,4 +33,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default ServerNav;
