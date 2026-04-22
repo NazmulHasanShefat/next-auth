@@ -29,7 +29,7 @@ const signInpage = () => {
     if(error){
       alert(`Error signing in ${error.message}...`);
     }if(data){
-      alert("sign in successfull")
+      console.log("sign in successfull", data);
     }
     console.log("show data", data);
 
